@@ -1,7 +1,6 @@
 # FastAPI Database Template
 
-A clean, production-ready FastAPI template with database integration, authentication, and user management. Based on Fast API Best Practices by [Tomasz Chowaniec](https://github.com/tomaszchow/fastapi-best-practices).
-
+A clean, production-ready FastAPI template with database integration, authentication, and user management. Based on Fast API Best Practices by [Zhanymkanov](https://github.com/zhanymkanov/fastapi-best-practices)
 ## Features
 
 - FastAPI setup with CORS middleware
