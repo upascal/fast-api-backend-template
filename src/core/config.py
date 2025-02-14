@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     
     # App
-    APP_NAME: str = "Add Application Name"
+    APP_NAME: str = "FastAPI App Template"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
     
