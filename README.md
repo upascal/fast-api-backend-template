@@ -30,47 +30,74 @@ A clean, production-ready FastAPI template with database integration, authentica
 
 ## Getting Started
 
-1. Clone this template:
+### Prerequisites
+- Docker Desktop installed
+- PostgreSQL client (optional)
+
+### Installation
+
+1. Clone the repository:
 ```bash
 git clone https://github.com/upascal/fast-api-db-template.git
 cd fast-api-db-template
 ```
 
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Copy `.env.example` to `.env` and update the variables:
+2. Configure environment variables:
 ```bash
 cp .env.example .env
 ```
+Edit `.env` file with your credentials:
+```ini
+# Database
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/fastapi_db
+ASYNC_DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/fastapi_db
 
-5. Start the database:
-```bash
-docker-compose up -d
+# Authentication
+JWT_SECRET=your-secure-key-here
+JWT_ALGORITHM=HS256
 ```
 
-6. Run migrations:
+3. Start services:
 ```bash
-alembic upgrade head
+docker-compose up -d --build
 ```
 
-7. Start the application:
+4. Run database migrations:
 ```bash
-uvicorn src.main:app --reload
+docker-compose exec api alembic upgrade head
 ```
 
-The API will be available at `http://localhost:8000`
+5. Verify services are running:
+```bash
+docker-compose ps
+```
+
+### Accessing the API
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
+- Health check: `http://localhost:8000/api/v1/health`
+
+### Example Request
+Create a new user:
+```bash
+curl -X POST http://localhost:8000/api/v1/users \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "password": "securepass123"}'
+```
+
+## Key Configuration
+
+| Environment Variable         | Description                          | Default                              |
+|------------------------------|--------------------------------------|--------------------------------------|
+| `DATABASE_URL`               | PostgreSQL connection URL            | postgresql+asyncpg://postgres:postgres@db:5432/fastapi_db |
+| `JWT_SECRET`                 | Secret key for JWT tokens            | (required - set in .env)             |
+| `JWT_ALGORITHM`              | Algorithm for JWT tokens             | HS256                                |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`| Token expiration time                | 30                                   |
+| `CORS_ORIGINS`               | Allowed origins for CORS             | ["http://localhost:3000"]            |
 
 ## API Documentation
 
-Once the application is running, you can access:
-- Swagger UI documentation at `http://localhost:8000/docs`
-- ReDoc documentation at `http://localhost:8000/redoc`
+Access these endpoints once the service is running:
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
+- Health Check: `http://localhost:8000/api/v1/health`
