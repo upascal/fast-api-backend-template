@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     # Database
-    DATABASE_URL: PostgresDsn
-    ASYNC_DATABASE_URL: PostgresDsn
+    DATABASE_URL: PostgresDsn = "postgresql://postgres:postgres@db:5432/fastapi_db"
+    ASYNC_DATABASE_URL: PostgresDsn = "postgresql+asyncpg://postgres:postgres@db:5432/fastapi_db"
     
     # JWT
     JWT_SECRET: str
