@@ -24,5 +24,17 @@ services:
     depends_on:
       - db
 
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/pronunciation_app
+
 volumes:
   postgres_data:
