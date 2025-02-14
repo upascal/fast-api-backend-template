@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: pronunciation_app
+      POSTGRES_DB: fastapi_db
     ports:
       - "5432:5432"
     volumes:
@@ -34,7 +34,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/pronunciation_app
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/fastapi_db
 
 volumes:
   postgres_data:
