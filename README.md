@@ -38,8 +38,8 @@ A clean, production-ready FastAPI template with database integration, authentica
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/upascal/fast-api-db-template.git
-cd fast-api-db-template
+git clone https://github.com/upascal/fast-api-backend-template.git
+cd fast-api-backend-template
 ```
 
 2. Configure environment variables:

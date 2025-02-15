@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "fast-api-db-template"
+name = "fast-api-backend-template"
 version = "1.0.0"
 description = "FastAPI template with database integration"
 requires-python = ">=3.9"
