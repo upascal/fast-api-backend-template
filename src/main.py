@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 import logging
 
 from src.core.config import settings
+from src.core.exceptions import DetailedHTTPException
 from src.auth.router import router as auth_router
 from src.users.router import router as users_router
 
@@ -24,6 +26,18 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+# Global exception handler
+@app.exception_handler(DetailedHTTPException)
+async def detailed_http_exception_handler(request: Request, exc: DetailedHTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "success": False,
+            "message": exc.detail,
+            "data": None
+        }
+    )
 
 # Set up CORS
 logger.debug(f"CORS Configuration - Origins: {settings.CORS_ORIGINS}, Headers: {settings.CORS_HEADERS}")
@@ -49,19 +63,31 @@ app.include_router(auth_router, prefix="/api/v1")
 app.include_router(users_router, prefix="/api/v1")
 
 
-@app.get("/")
+from src.core.schemas import ResponseModel
+from typing import Dict
+
+
+@app.get("/", response_model=ResponseModel[Dict[str, str]])
 async def root():
     """Root endpoint that redirects to API documentation."""
-    return {
-        "message": "Welcome to the API",
-        "documentation": "/docs",
-        "health_check": "/api/v1/health"
-    }
+    return ResponseModel(
+        success=True,
+        message="Welcome to the API",
+        data={
+            "documentation": "/docs",
+            "health_check": "/api/v1/health"
+        }
+    )
 
-@app.get("/api/v1/health")
+
+@app.get("/api/v1/health", response_model=ResponseModel[Dict[str, str]])
 async def health_check():
     """Health check endpoint."""
-    return {
-        "status": "healthy",
-        "version": "1.0.0"
-    }
+    return ResponseModel(
+        success=True,
+        message="System health check",
+        data={
+            "status": "healthy",
+            "version": "1.0.0"
+        }
+    )
