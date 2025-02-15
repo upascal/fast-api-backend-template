@@ -77,13 +77,48 @@ docker-compose ps
 - ReDoc: `http://localhost:8000/redoc`
 - Health check: `http://localhost:8000/api/v1/health`
 
-### Example Request
-Create a new user:
+### User Management Examples
+
+1. Create a new user:
 ```bash
 curl -X POST http://localhost:8000/api/v1/users \
   -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "securepass123"}'
+  -d '{
+    "email": "user@example.com",
+    "password": "securepass123"
+  }'
 ```
+
+2. Login to get access token:
+```bash
+curl -X POST http://localhost:8000/api/v1/auth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=user@example.com" \
+  -d "password=securepass123"
+```
+
+3. Get user profile (requires token):
+```bash
+curl http://localhost:8000/api/v1/auth/me \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+4. Update user profile (requires token):
+```bash
+curl -X PUT http://localhost:8000/api/v1/users/YOUR_USER_ID \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "John",
+    "last_name": "Doe"
+  }'
+```
+
+Notes:
+- Replace YOUR_ACCESS_TOKEN with the token received from login
+- Replace YOUR_USER_ID with your user's ID (available in profile)
+- Token is valid for 30 minutes
+- Users can only modify their own data (row-level security)
 
 ## Key Configuration
 
